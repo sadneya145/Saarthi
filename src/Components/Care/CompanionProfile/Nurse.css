@@ -1,0 +1,64 @@
+/* NurseProfile Container */
+.nurse-profile-container {
+    display: flex;
+  }
+  
+  .nurse-profile-container .nurse-photo {
+    flex: 0 0 40%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #A1CCD1; 
+  }
+  
+  .nurse-profile-container .nurse-photo img {
+    width: 100%; 
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .nurse-info {
+    flex: 1; 
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start; 
+    overflow-y: auto;
+  }
+  
+  /* Name and Info Styling */
+  nurse-info h1 {
+    color: #7C9D96;
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    white-space: normal; /* Allow wrapping */
+  }
+  
+  nurse-info h2 {
+    color: #7C9D96;
+    margin-top: 20px;
+    border-bottom: 2px solid #A1CCD1;
+    padding-bottom: 5px;
+  }
+  
+  ul {
+    list-style-type: disc;
+    margin-left: 20px;
+  }
+  
+  .review {
+    background-color: #E9B384;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 5px;
+  }
+
+  .reviews-section {
+    /* max-height: 200px;  */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding: 10px; /* Optional: padding for aesthetics */
+  }
+  
+  .reviews-section::-webkit-scrollbar {
+    width: 0px; /* Set width to 0 to hide scrollbar */
+    background: transparent; /* Optional: to ensure background doesn't show */
+  }
