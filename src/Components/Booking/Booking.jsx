@@ -3,9 +3,9 @@ import Button from "react-bootstrap/Button";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
+import { useNavigate } from "react-router-dom";
 
 export default function Booking() {
-
   const [address, setAddress] = useState({
     address1: "",
     address2: "",
@@ -15,6 +15,7 @@ export default function Booking() {
   });
 
   const [patients, setPatients] = useState([{ name: "", age: "", diagnosis: "" }]);
+  const navigate = useNavigate();
 
   const handleAddressChange = (event) => {
     const { name, value } = event.target;
@@ -34,8 +35,12 @@ export default function Booking() {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log("Address:", address);
-    console.log("Patients:", patients);
+    // Basic validation
+    if (!address.address1 || !address.city || patients.some(p => !p.name || !p.age)) {
+      alert("Please fill out all required fields.");
+      return;
+    }
+    navigate('/patient-details', { state: { address, patients } }); // Pass the details to PatientDetails page
   };
 
   return (
@@ -43,7 +48,6 @@ export default function Booking() {
       <h1 className="ms-3">Patient Details:</h1>
       <div className="patientForm">
         <Form className="p-3" onSubmit={handleSubmit}>
-
           <h2>Address Details</h2>
           <Form.Group className="mb-3" controlId="formGridAddress1">
             <Form.Label>Address</Form.Label>
@@ -52,6 +56,7 @@ export default function Booking() {
               placeholder="1234 Main St"
               value={address.address1}
               onChange={handleAddressChange}
+              required
             />
           </Form.Group>
 
@@ -72,6 +77,7 @@ export default function Booking() {
                 name="city"
                 value={address.city}
                 onChange={handleAddressChange}
+                required
               />
             </Form.Group>
 
@@ -81,6 +87,7 @@ export default function Booking() {
                 name="state"
                 value={address.state}
                 onChange={handleAddressChange}
+                required
               >
                 <option>Choose...</option>
                 <option>State 1</option>
@@ -94,6 +101,7 @@ export default function Booking() {
                 name="zip"
                 value={address.zip}
                 onChange={handleAddressChange}
+                required
               />
             </Form.Group>
           </Row>
@@ -102,7 +110,7 @@ export default function Booking() {
 
           {patients.map((patient, index) => (
             <div key={index}>
-              <h6 className="my-2">Patient {index+1}</h6>
+              <h6 className="my-2">Patient {index + 1}</h6>
               <Row className="mb-3">
                 <Form.Group as={Col} controlId={`formName${index}`}>
                   <Form.Label>Name</Form.Label>
@@ -112,6 +120,7 @@ export default function Booking() {
                     placeholder="Enter patient's name"
                     value={patient.name}
                     onChange={(event) => handlePatientChange(index, event)}
+                    required
                   />
                 </Form.Group>
 
@@ -123,6 +132,7 @@ export default function Booking() {
                     placeholder="Enter patient's age"
                     value={patient.age}
                     onChange={(event) => handlePatientChange(index, event)}
+                    required
                   />
                 </Form.Group>
               </Row>
@@ -141,13 +151,18 @@ export default function Booking() {
             </div>
           ))}
 
-          <Button type="button" onClick={addPatient}>
-            Add Patient
-          </Button>
-
-          <Button type="submit" className="ms-2">
-            Submit
-          </Button>
+          <Row className="mb-3">
+            <Col>
+              <Button type="button" onClick={addPatient} className="mb-3">
+                Add Patient
+              </Button>
+            </Col>
+            <Col className="text-end">
+              <Button type="submit" className="ms-2">
+                Submit
+              </Button>
+            </Col>
+          </Row>
         </Form>
       </div>
     </div>

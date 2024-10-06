@@ -9,6 +9,8 @@ import Forms from './Components/Forms/Forms';
 import NurseProfile from './Components/Care/CompanionProfile/Nurse';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Booking from './Components/Booking/Booking';
+import PatientDetails from './Components/PatientDetails/PatientDetails';
+import Confirmation from './Components/Confirmation/Confirmation';
 
 const router = createBrowserRouter([
   {
@@ -21,41 +23,39 @@ const router = createBrowserRouter([
   },
   {
     path: "/care/:type",
-    element: <Care />,
-    // children: [
-    //   {
-    //     path: ":name", 
-    //     element: <NurseProfile />
-    //   }
-    // ]
+    element: <Care />
   },
   {
     path: "/care/:type/:name",
-    element: <NurseProfile/>
+    element: <NurseProfile />
   },
   {
     path: "/register/:type",
     element: <Forms />
   },
   {
-    path: "booking",
-    element: <Booking/>
+    path: "/booking",
+    element: <Booking />
+  },
+  {
+    path: "/patient-details",
+    element: <PatientDetails />
+  },
+  {
+    path: "/confirmation",
+    element: <Confirmation />
   }
 ]);
-
-
 
 function App() {
   return (
     <React.StrictMode>
-      
       <main className='mb-0'>
-        <Header/>
-        <hr className='mt-0'/>
+        <Header />
+        <hr className='mt-0' />
         <RouterProvider router={router} />
-        <Footer/>
+        <Footer />
       </main>
-      
     </React.StrictMode>
   );
 }
