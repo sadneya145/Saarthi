@@ -3,12 +3,14 @@ import nursePhoto from '../../../assets/img/WhatsApp Image 2024-09-29 at 22.08.0
 import './Nurse.css'
 import Header from '../../Essentials/Header';
 import Footer from '../../Essentials/Footer';
+import { useNavigate } from 'react-router-dom';
 
 const NurseProfile = () => {
   const [nurseData, setNurseData] = useState(null);
+  const navigate = useNavigate();
 
   const hardcodedData = {
-    name: "Nurse 1",
+    name: "Somebody",
     address: "Address:VESIT",
     degree: "Bachelor of Science in Nursing (BSN)",
     certificates: [
@@ -50,15 +52,20 @@ const NurseProfile = () => {
 
   if (!nurseData) return <div>Loading...</div>;
 
+  function bookCompanion(){
+    localStorage.setItem("nurseData", JSON.stringify(nurseData));
+    navigate("/booking");
+  }
+
   return (
     <div>
-      <Header/>
-      <div className="nurse-profile-container d-flex">
-      <div className="nurse-photo">
-        <img src={nursePhoto} alt="Nurse" />
-      </div>
+      <div className="conatiner nurse-profile-container row p-2">
+        
+        <div className='nursePhoto col'>
+          <img src={nursePhoto} alt="" />
+        </div>
 
-      <div className="nurse-info">
+      <div className="nurse-info col">
         <h1>{nurseData.name}</h1>
         <p><strong>Address:</strong> {nurseData.address}</p>
         <p><strong>Degree:</strong> {nurseData.degree}</p>
@@ -96,7 +103,9 @@ const NurseProfile = () => {
         </div>
       </div>
     </div>
-    <Footer/>
+    <center>
+    <button className='btn m-5 book-btn' onClick={bookCompanion}>Book companion</button>
+    </center>
     </div>
   );
 };

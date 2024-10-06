@@ -8,10 +8,11 @@ import Footer from './Components/Essentials/Footer';
 import Forms from './Components/Forms/Forms';
 import NurseProfile from './Components/Care/CompanionProfile/Nurse';
 import LoginSignup from './Components/LoginSignup/LoginSignup';
+import Booking from './Components/Booking/Booking';
 
 const router = createBrowserRouter([
   {
-    path: "/login",
+    path: "/",
     element: <LoginSignup />
   },
   {
@@ -35,6 +36,10 @@ const router = createBrowserRouter([
   {
     path: "/register/:type",
     element: <Forms />
+  },
+  {
+    path: "booking",
+    element: <Booking/>
   }
 ]);
 
@@ -45,7 +50,10 @@ function App() {
     <React.StrictMode>
       
       <main className='mb-0'>
+        <Header/>
+        <hr className='mt-0'/>
         <RouterProvider router={router} />
+        <Footer/>
       </main>
       
     </React.StrictMode>
