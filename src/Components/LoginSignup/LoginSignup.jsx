@@ -25,7 +25,7 @@ const LoginSignup = () => {
         </button>
       </div>
       <div className={`form-card ${isLogin ? "slide-in-left" : "slide-in-right"} p-3`}>
-        {isLogin ? <Login /> : <Signup />}
+        {isLogin ? <Login /> : <Signup setIsLogin={setIsLogin} />}
       </div>
     </div>
     </div>

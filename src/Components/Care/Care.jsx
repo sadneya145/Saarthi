@@ -38,6 +38,8 @@ export default function Care() {
 
     return (
         <div>
+            <Header />
+            <hr className="mt-0"/>
             <div className="p-4">
                 <div className="topbar d-flex justify-content-between">
                     <div className="input-group mb-3">
@@ -78,6 +80,7 @@ export default function Care() {
                 </div>
                 <Outlet />
             </div>
+            <Footer />
         </div>
     );
 }

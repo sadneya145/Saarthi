@@ -1,14 +1,16 @@
 import React, { useState } from 'react';
 import './LoginSignup.css';
 import axios from 'axios';
-import './Signup.css'
+import { useNavigate } from 'react-router-dom';
 
-const Signup = () => {
+const Signup = ({ setIsLogin }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -22,6 +24,8 @@ const Signup = () => {
     try {
       const res = await axios.post('http://localhost:5000/api/auth/signup', { email, password });
       setSuccess(res.data.msg);
+      alert("Account created successfully")
+      setIsLogin(true);
       setError('');
     } catch (err) {
       setError(err.response.data.msg);

@@ -10,7 +10,7 @@ export default function Footer(){
     return (
         <div className="footer">
             <hr />
-            <footer className="d-flex p-4 pt-5">
+            <footer className="d-flex p-4 pt-3">
                 <div className="left d-flex justify-content-between align-items-center" style={{width: '50rem'}}>
                     <h1 className="ms-4">Saarthi</h1>
                 </div>
@@ -23,10 +23,12 @@ export default function Footer(){
                     </div>
                     <div className="d-flex flex-column">
                         <h5 className="mb-3">Services</h5>
-                        <a href="" className="my-2">Service 1</a>
-                        <a href="" className="my-2">Service 2</a>
-                        <a href="" className="my-2">Service 3</a>
-                        <a href="" className="my-2">Service 4</a>
+                        <a href="/care/Health%20Care%20Assistance" className="my-2">Health Care</a>
+                        <a href="/care/Leisure%20Care" className="my-2">Leisure Care</a>
+                        <a href="/care/Companion%20Care" className="my-2">Companion Care</a>
+                        <a href="/care/Rehabilitation" className="my-2">Rehabilitation</a>
+                        <a href="/care/Mental%Healt%Care" className="my-2">Mental Health Care</a>
+                        <a href="/care/Emergency%20Care%20Assistance" className="mt-2">Emergency Care</a>
                     </div>
                 </div>
 

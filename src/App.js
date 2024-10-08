@@ -51,10 +51,7 @@ function App() {
   return (
     <React.StrictMode>
       <main className='mb-0'>
-        <Header />
-        <hr className='mt-0' />
         <RouterProvider router={router} />
-        <Footer />
       </main>
     </React.StrictMode>
   );

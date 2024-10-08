@@ -6,7 +6,8 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Header from "../Essentials/Header";
 import Footer from "../Essentials/Footer";
-import axios from 'axios';
+import InputGroup from "react-bootstrap/InputGroup";
+import axios from "axios";
 
 export default function Forms() {
   const params = useParams();
@@ -14,14 +15,15 @@ export default function Forms() {
 
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
-    name: '',
-    degree: '',
-    address: '',
-    address2: '',
-    city: '',
-    state: '',
-    zip: '',
+    name: "",
+    degree: "",
+    address: "",
+    address2: "",
+    city: "",
+    state: "",
+    zip: "",
     serviceCategory: title,
+    charges: "",
   });
 
   const handleFileChange = (e) => {
@@ -42,72 +44,86 @@ export default function Forms() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Create a FormData object to send the form data and files
+  
+    const address = `${formData.address} ${formData.address2}`.trim();
+  
     const data = new FormData();
-
+  
     // Append form fields to FormData
     for (const key in formData) {
-      data.append(key, formData[key]);
+      if (key === "address") {
+        data.append("address", address); 
+      } else if (key !== "address2") {
+        data.append(key, formData[key]);
+      }
     }
-
+  
+    // Ensure charges field is appended
+    data.append("charges", formData.charges); // <-- Add this line
+  
     // Append files only if they exist
     if (files.length > 0) {
-      files.forEach(fileData => {
+      files.forEach((fileData) => {
         data.append("documents", fileData.file); // Append each file
       });
     }
-
+  
     try {
-      const res = await axios.post('http://localhost:5000/api/service/submit', data, {
-        headers: {
-          'Content-Type': 'multipart/form-data',
-        },
-      });
+      const res = await axios.post(
+        "http://localhost:5000/api/service/submit",
+        data,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       alert(res.data.message); // Use a success message from the server
       // Reset the form or do something else on success
       setFormData({
-        name: '',
-        degree: '',
-        address: '',
-        address2: '',
-        city: '',
-        state: '',
-        zip: '',
+        name: "",
+        degree: "",
+        address: "",
+        address2: "",
+        city: "",
+        state: "",
+        zip: "",
         serviceCategory: title,
+        charges: "",
       });
       setFiles([]);
     } catch (error) {
       console.error("Error submitting form:", error);
-      alert('Failed to submit the form. Please try again.');
+      alert("Failed to submit the form. Please try again.");
     }
   };
 
   return (
     <div>
       <Header />
+      <hr className="mt-0" />
       <Form className="p-3" onSubmit={handleSubmit}>
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formName">
             <Form.Label>Name</Form.Label>
-            <Form.Control 
-              type="text" 
-              placeholder="Enter your full name" 
-              name="name" 
+            <Form.Control
+              type="text"
+              placeholder="Enter your full name"
+              name="name"
               value={formData.name}
-              onChange={handleChange} 
+              onChange={handleChange}
               required
             />
           </Form.Group>
 
           <Form.Group as={Col} controlId="formDegree">
             <Form.Label>Degree</Form.Label>
-            <Form.Control 
-              type="text" 
-              placeholder="Degree" 
-              name="degree" 
+            <Form.Control
+              type="text"
+              placeholder="Degree"
+              name="degree"
               value={formData.degree}
-              onChange={handleChange} 
+              onChange={handleChange}
               required
             />
           </Form.Group>
@@ -115,50 +131,53 @@ export default function Forms() {
 
         <Form.Group className="mb-3" controlId="formGridAddress1">
           <Form.Label>Address</Form.Label>
-          <Form.Control 
-            placeholder="1234 Main St" 
-            name="address" 
+          <Form.Control
+            placeholder="1234 Main St"
+            name="address"
             value={formData.address}
-            onChange={handleChange} 
+            onChange={handleChange}
             required
           />
         </Form.Group>
 
         <Form.Group className="mb-3" controlId="formGridAddress2">
           <Form.Label>Address 2</Form.Label>
-          <Form.Control 
-            placeholder="Apartment, studio, or floor" 
-            name="address2" 
+          <Form.Control
+            placeholder="Apartment, studio, or floor"
+            name="address2"
             value={formData.address2}
-            onChange={handleChange} 
+            onChange={handleChange}
           />
         </Form.Group>
 
         <Row className="mb-3">
           <Form.Group as={Col} controlId="formGridCity">
             <Form.Label>City</Form.Label>
-            <Form.Control 
-              name="city" 
+            <Form.Control
+              name="city"
               value={formData.city}
-              onChange={handleChange} 
+              onChange={handleChange}
               required
             />
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridState">
             <Form.Label>State</Form.Label>
-            <Form.Select name="state" value={formData.state} onChange={handleChange} required>
-              <option>Choose...</option>
-              {/* Add state options here */}
-            </Form.Select>
+            <Form.Control
+              name="state"
+              value={formData.state}
+              onChange={handleChange}
+              required
+            >
+            </Form.Control>
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridZip">
             <Form.Label>Zip</Form.Label>
-            <Form.Control 
-              name="zip" 
+            <Form.Control
+              name="zip"
               value={formData.zip}
-              onChange={handleChange} 
+              onChange={handleChange}
               required
             />
           </Form.Group>
@@ -174,11 +193,7 @@ export default function Forms() {
         {/* Multiple File Upload Section */}
         <Form.Group className="mb-3" controlId="formFileMultiple">
           <Form.Label>Upload documents (Optional)</Form.Label>
-          <Form.Control
-            type="file"
-            multiple
-            onChange={handleFileChange}
-          />
+          <Form.Control type="file" multiple onChange={handleFileChange} name="documents" />
         </Form.Group>
 
         {/* Display Uploaded Files as Links */}
@@ -188,7 +203,11 @@ export default function Forms() {
             <ul>
               {files.map((fileData, index) => (
                 <li key={index}>
-                  <a href={fileData.url} target="_blank" rel="noopener noreferrer">
+                  <a
+                    href={fileData.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     {fileData.file.name}
                   </a>
                 </li>
@@ -199,8 +218,20 @@ export default function Forms() {
           )}
         </div>
 
-        <Form.Group className="mb-3" id="formGridCheckbox">
-          <Form.Check type="checkbox" label="I agree to the terms and conditions" required />
+        <Form.Group controlId="formCharge">
+          <Form.Label>Charges</Form.Label>
+          <InputGroup style={{ width: "30rem" }}>
+            <InputGroup.Text>₹</InputGroup.Text>
+            <Form.Control type="number" onChange={handleChange} />
+          </InputGroup>
+        </Form.Group>
+
+        <Form.Group className="my-3 mb-4" id="formGridCheckbox">
+          <Form.Check
+            type="checkbox"
+            label="I agree to the terms and conditions"
+            required
+          />
         </Form.Group>
 
         <Button variant="primary" type="submit">

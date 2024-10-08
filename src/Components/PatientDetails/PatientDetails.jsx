@@ -1,14 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Header from '../Essentials/Header';
+import Footer from '../Essentials/Footer';
 
 const PatientDetails = () => {
   const location = useLocation();
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
   const { address, patients } = location.state || {};
 
   const handleConfirm = () => {
-    navigate('/confirmation'); // Navigate to the confirmation page
+    navigate('/confirmation', { state: { address, patients } });
   };
 
   if (!address || !patients) {
@@ -16,7 +18,9 @@ const PatientDetails = () => {
   }
 
   return (
-    <div className="p-3">
+    <div>
+      <Header/>
+      <div className="p-3">
       <h2>Patient Details</h2>
 
       <h3>Address</h3>
@@ -36,6 +40,8 @@ const PatientDetails = () => {
       <button className="btn btn-primary mt-3" onClick={handleConfirm}>
         Confirm Booking
       </button>
+    </div>
+    <Footer/>
     </div>
   );
 };
@@ -62,4 +68,3 @@ PatientDetails.propTypes = {
 };
 
 export default PatientDetails;
-

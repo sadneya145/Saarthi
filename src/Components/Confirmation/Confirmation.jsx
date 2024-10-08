@@ -1,58 +1,90 @@
-// src/Components/Confirmation/Confirmation.jsx
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
+import "./Confirmation.css";
+import { useLocation } from 'react-router-dom';
 
+import Header from '../Essentials/Header';
+import Footer from '../Essentials/Footer'
+;
 export default function Confirmation() {
+  const location = useLocation();
+  const { address, patients } = location.state || {};
+
+  const [startRemoval, setStartRemoval] = useState(false); // Track when to start fading out
+  const [isRemoved, setIsRemoved] = useState(false); // Track when to completely remove the div
+  const lowerDivRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            // Trigger fade-out animation when lower div is in view
+            setStartRemoval(true);
+
+            // Wait for the animation to finish before removing the div from the DOM
+            setTimeout(() => {
+              setIsRemoved(true);
+            }, 500); // Match this duration with the CSS animation time
+          }
+        });
+      },
+      { threshold: 0.1 } // Adjust threshold as needed
+    );
+
+    if (lowerDivRef.current) {
+      observer.observe(lowerDivRef.current);
+    }
+
+    // Cleanup observer on component unmount
+    return () => {
+      if (lowerDivRef.current) {
+        observer.unobserve(lowerDivRef.current);
+      }
+    };
+  }, []);
+
+  if (!address || !patients) {
+    return <div>No data available. Please go back and submit the form again.</div>;
+  }
+
   return (
-    <div className="confirmation-container">
-      <h1 className="confirmation-header">Congratulations on Your Booking!</h1>
-      <p className="confirmation-message">The nurse will reach you shortly.</p>
+    <div>
+      {/* Conditionally render with animation */}
+      {!isRemoved && (
+        <div className={`confirmation-container ${startRemoval ? 'fade-out' : ''}`}>
+          <h1 className="confirmation-header">Congratulations on Your Booking!</h1>
+          <p className="confirmation-message">The nurse will reach you shortly.</p>
+        </div>
+      )}
 
-      <style jsx>{`
-        .confirmation-container {
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          justify-content: center;
-          height: 100vh;
-          background-color: #f4f2de; /* Light background color */
-          color: #4a4a4a; /* Dark text color */
-          animation: fadeIn 1s ease-in-out;
-        }
-
-        .confirmation-header {
-          font-size: 2.5rem;
-          color: #28a745; /* Green color for success */
-          margin-bottom: 1rem;
-          animation: bounce 1.5s infinite;
-        }
-
-        .confirmation-message {
-          font-size: 1.5rem;
-          text-align: center;
-        }
-
-        /* Keyframes for animations */
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% {
-            transform: translateY(0);
-          }
-          40% {
-            transform: translateY(-10px);
-          }
-          60% {
-            transform: translateY(-5px);
-          }
-        }
-      `}</style>
+      <div className="confirmed" ref={lowerDivRef}>
+      <Header/>
+      <hr className="mt-0" />
+        <div className='p-3'>
+        <h1 className="mb-3">Booking Details!</h1>
+        <div className="receipt">
+          <div className="address-info">
+            <div className="patient-info">
+              <h3>Patient Details</h3>
+              {patients.map((patient, index) => (
+                <div key={index} className="patient-details">
+                  <h4>Patient {index + 1}</h4>
+                  <p><strong>Name:</strong> {patient.name}</p>
+                  <p><strong>Age:</strong> {patient.age}</p>
+                  <p><strong>Diagnosis:</strong> {patient.diagnosis}</p>
+                </div>
+              ))}
+            </div>
+            <h3>Address of the Patient</h3>
+            <p><strong>Address:</strong> {address.address1}, {address.address2}</p>
+            <p><strong>City:</strong> {address.city}</p>
+            <p><strong>State:</strong> {address.state}</p>
+            <p><strong>Zip:</strong> {address.zip}</p>
+          </div>
+        </div>
+        </div>
+        <Footer/>
+      </div>
     </div>
   );
 }

@@ -4,6 +4,8 @@ import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import { useNavigate } from "react-router-dom";
+import Header from "../Essentials/Header";
+import Footer from "../Essentials/Footer";
 
 export default function Booking() {
   const [address, setAddress] = useState({
@@ -45,6 +47,8 @@ export default function Booking() {
 
   return (
     <div>
+      <Header/>
+      <hr className="mt-0" />
       <h1 className="ms-3">Patient Details:</h1>
       <div className="patientForm">
         <Form className="p-3" onSubmit={handleSubmit}>
@@ -83,16 +87,13 @@ export default function Booking() {
 
             <Form.Group as={Col} controlId="formGridState">
               <Form.Label>State</Form.Label>
-              <Form.Select
+              <Form.Control
                 name="state"
                 value={address.state}
                 onChange={handleAddressChange}
                 required
               >
-                <option>Choose...</option>
-                <option>State 1</option>
-                <option>State 2</option>
-              </Form.Select>
+              </Form.Control>
             </Form.Group>
 
             <Form.Group as={Col} controlId="formGridZip">
@@ -165,6 +166,7 @@ export default function Booking() {
           </Row>
         </Form>
       </div>
+      <Footer />
     </div>
   );
 }

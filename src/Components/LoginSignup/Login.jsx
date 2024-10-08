@@ -15,10 +15,12 @@ const Login = () => {
     
     try {
       const res = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+      alert(res.data.msg)
       setSuccess(res.data.msg);
       setError('');
       navigate("/dashboard")
     } catch (err) {
+      alert(err.response.data.msg)
       setError(err.response.data.msg);
       setSuccess('');
     }
@@ -46,8 +48,8 @@ const Login = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
         </div>
-        {error && <p className="error-msg">{error}</p>}
-        {success && <p className="success-msg">{success}</p>}
+        {error && <p className="error-msg" style={{color: "red"}}>{error}</p>}
+        {success && <p className="success-msg" style={{color: "green"}}>{success}</p>}
         <button type="submit" className="submit-btn">Login</button>
       </form>
     </div>

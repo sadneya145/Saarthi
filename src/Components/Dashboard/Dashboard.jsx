@@ -25,6 +25,7 @@ export default function Dashboard() {
 
   return (
     <div>
+      <Header />
       <div className="videoContainer">
         <h1 id="tag">Find true companionship that enriches every moment of life.</h1>
         <video ref={videoRef} src={video} autoPlay muted loop />
@@ -101,6 +102,7 @@ export default function Dashboard() {
           ))}
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

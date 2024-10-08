@@ -59,6 +59,8 @@ const NurseProfile = () => {
 
   return (
     <div>
+      <Header />
+      <hr className="mt-0" />
       <div className="conatiner nurse-profile-container row p-2">
         
         <div className='nursePhoto col'>
@@ -106,6 +108,7 @@ const NurseProfile = () => {
     <center>
     <button className='btn m-5 book-btn' onClick={bookCompanion}>Book companion</button>
     </center>
+    <Footer />
     </div>
   );
 };
