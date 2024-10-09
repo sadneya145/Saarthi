@@ -6,12 +6,13 @@ import Form from "react-bootstrap/Form";
 import Row from "react-bootstrap/Row";
 import Header from "../Essentials/Header";
 import Footer from "../Essentials/Footer";
-import InputGroup from "react-bootstrap/InputGroup";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function Forms() {
   const params = useParams();
   const title = params.type;
+  const navigate = useNavigate();
 
   const [files, setFiles] = useState([]);
   const [formData, setFormData] = useState({
@@ -23,7 +24,6 @@ export default function Forms() {
     state: "",
     zip: "",
     serviceCategory: title,
-    charges: "",
   });
 
   const handleFileChange = (e) => {
@@ -38,36 +38,41 @@ export default function Forms() {
     const { name, value } = e.target;
     setFormData((prev) => ({
       ...prev,
-      [name]: value,
+      [name]: name === "age" ? Number(value) : value,
     }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
-    const address = `${formData.address} ${formData.address2}`.trim();
-  
+    console.log(formData);
+
+    const combinedAddress = `${formData.address}, ${formData.address2}`;
+
+    // Create a FormData object to send the form data and files
     const data = new FormData();
-  
-    // Append form fields to FormData
-    for (const key in formData) {
-      if (key === "address") {
-        data.append("address", address); 
-      } else if (key !== "address2") {
-        data.append(key, formData[key]);
-      }
-    }
-  
-    // Ensure charges field is appended
-    data.append("charges", formData.charges); // <-- Add this line
-  
+
+    data.append("name", formData.name);
+    data.append("degree", formData.degree);
+    data.append("address", combinedAddress);
+    data.append("city", formData.city);
+    data.append("state", formData.state);
+    data.append("zip", formData.zip);
+    data.append("serviceCategory", formData.serviceCategory);
+
+
     // Append files only if they exist
+    const documents = [];
     if (files.length > 0) {
       files.forEach((fileData) => {
-        data.append("documents", fileData.file); // Append each file
+        documents.push(fileData.url) // Append each file
       });
     }
-  
+    data.append("documents", documents)
+
+    for (const [key, value] of data.entries()) {
+      console.log(`${key}: ${value}`);
+    }
+
     try {
       const res = await axios.post(
         "http://localhost:5000/api/service/submit",
@@ -78,7 +83,8 @@ export default function Forms() {
           },
         }
       );
-      alert(res.data.message); // Use a success message from the server
+      alert("Registration successfull"); // Use a success message from the server
+      navigate(`/care/${title}`)
       // Reset the form or do something else on success
       setFormData({
         name: "",
@@ -89,7 +95,6 @@ export default function Forms() {
         state: "",
         zip: "",
         serviceCategory: title,
-        charges: "",
       });
       setFiles([]);
     } catch (error) {
@@ -127,7 +132,61 @@ export default function Forms() {
               required
             />
           </Form.Group>
+
+          {/* <Form.Group as={Col} controlId="formGender">
+            <Form.Label>Gender</Form.Label>
+            <Form.Control
+              type="text"
+              placeholder="Enter gender"
+              name="gender"
+              value={formData.gender}
+              onChange={handleChange}
+              required
+            >
+            </Form.Control>
+          </Form.Group> */}
         </Row>
+
+        {/* <Form.Group as={Col} controlId="formAge">
+          <Form.Label>Age</Form.Label>
+          <Form.Control
+            type="number"
+            placeholder="Enter your age"
+            name="age"
+            value={formData.age}
+            onChange={handleChange}
+            required
+          />
+        </Form.Group> */}
+
+        {/* <Row className="mb-3">
+          <Form.Group as={Col} controlId="formAge">
+            <Form.Label>Age</Form.Label>
+            <Form.Control
+              type="number"
+              placeholder="Enter your age"
+              name="age"
+              value={formData.age}
+              onChange={handleChange}
+              required
+            />
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="formGender">
+            <Form.Label>Gender</Form.Label>
+            <Form.Select
+              name="gender"
+              value={formData.gender} // Correct field name
+              onChange={handleChange}
+              required
+            >
+              <option value="">Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </Form.Select>
+          </Form.Group>
+        </Row> */}
 
         <Form.Group className="mb-3" controlId="formGridAddress1">
           <Form.Label>Address</Form.Label>
@@ -168,8 +227,7 @@ export default function Forms() {
               value={formData.state}
               onChange={handleChange}
               required
-            >
-            </Form.Control>
+            ></Form.Control>
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridZip">
@@ -193,7 +251,7 @@ export default function Forms() {
         {/* Multiple File Upload Section */}
         <Form.Group className="mb-3" controlId="formFileMultiple">
           <Form.Label>Upload documents (Optional)</Form.Label>
-          <Form.Control type="file" multiple onChange={handleFileChange} name="documents" />
+          <Form.Control type="file" multiple onChange={handleFileChange} />
         </Form.Group>
 
         {/* Display Uploaded Files as Links */}
@@ -218,15 +276,7 @@ export default function Forms() {
           )}
         </div>
 
-        <Form.Group controlId="formCharge">
-          <Form.Label>Charges</Form.Label>
-          <InputGroup style={{ width: "30rem" }}>
-            <InputGroup.Text>₹</InputGroup.Text>
-            <Form.Control type="number" onChange={handleChange} />
-          </InputGroup>
-        </Form.Group>
-
-        <Form.Group className="my-3 mb-4" id="formGridCheckbox">
+        <Form.Group className="mb-3" id="formGridCheckbox">
           <Form.Check
             type="checkbox"
             label="I agree to the terms and conditions"

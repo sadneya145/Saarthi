@@ -60,7 +60,8 @@ export default function Confirmation() {
       <div className="confirmed" ref={lowerDivRef}>
       <Header/>
       <hr className="mt-0" />
-        <div className='p-3'>
+        <center>
+        <div className='p-3 detailsBox'>
         <h1 className="mb-3">Booking Details!</h1>
         <div className="receipt">
           <div className="address-info">
@@ -83,6 +84,9 @@ export default function Confirmation() {
           </div>
         </div>
         </div>
+        </center>
+
+        
         <Footer/>
       </div>
     </div>
