@@ -1,53 +1,59 @@
-import React, { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Col from "react-bootstrap/Col";
-import Form from "react-bootstrap/Form";
-import Row from "react-bootstrap/Row";
-import { useNavigate } from "react-router-dom";
-import Header from "../Essentials/Header";
-import Footer from "../Essentials/Footer";
+import React, {useState} from 'react';
+import Button from 'react-bootstrap/Button';
+import Col from 'react-bootstrap/Col';
+import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import {useNavigate} from 'react-router-dom';
+import Header from '../Essentials/Header';
+import Footer from '../Essentials/Footer';
 
 export default function Booking() {
   const [address, setAddress] = useState({
-    address1: "",
-    address2: "",
-    city: "",
-    state: "",
-    zip: "",
+    address1: '',
+    address2: '',
+    city: '',
+    state: '',
+    zip: '',
   });
 
-  const [patients, setPatients] = useState([{ name: "", age: "", diagnosis: "" }]);
+  const [patients, setPatients] = useState([
+    {name: '', age: '', diagnosis: ''},
+  ]);
   const navigate = useNavigate();
 
-  const handleAddressChange = (event) => {
-    const { name, value } = event.target;
-    setAddress({ ...address, [name]: value });
+  const handleAddressChange = event => {
+    const {name, value} = event.target;
+    setAddress({...address, [name]: value});
   };
 
   const handlePatientChange = (index, event) => {
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     const updatedPatients = [...patients];
     updatedPatients[index][name] = value;
     setPatients(updatedPatients);
   };
 
   const addPatient = () => {
-    setPatients([...patients, { name: "", age: "", diagnosis: "" }]);
+    setPatients([...patients, {name: '', age: '', diagnosis: ''}]);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = event => {
     event.preventDefault();
     // Basic validation
-    if (!address.address1 || !address.city || patients.some(p => !p.name || !p.age)) {
-      alert("Please fill out all required fields.");
+    if (
+      !address.address1 ||
+      !address.city ||
+      patients.some(p => !p.name || !p.age)
+    ) {
+      alert('Please fill out all required fields.');
       return;
     }
-    navigate('/patient-details', { state: { address, patients } }); // Pass the details to PatientDetails page
+    navigate('/patient-details', {state: {address, patients}}); // Pass the details to PatientDetails page
   };
 
   return (
     <div>
-      <Header/>
+      <Header />
       <hr className="mt-0" />
       <h1 className="ms-3">Patient Details:</h1>
       <div className="patientForm">
@@ -74,6 +80,30 @@ export default function Booking() {
             />
           </Form.Group>
 
+          <h2 className="mt-4">Booking Schedule</h2>
+          <Row className="mb-3">
+            <Form.Group as={Col} controlId="formDate">
+              <Form.Label>Date</Form.Label>
+              <Form.Control
+                type="date"
+                required
+                onChange={e =>
+                  setAddress({...address, bookingDate: e.target.value})
+                }
+              />
+            </Form.Group>
+
+            <Form.Group as={Col} controlId="formTime">
+              <Form.Label>Time</Form.Label>
+              <Form.Control
+                type="time"
+                required
+                onChange={e =>
+                  setAddress({...address, bookingTime: e.target.value})
+                }
+              />
+            </Form.Group>
+          </Row>
           <Row className="mb-3">
             <Form.Group as={Col} controlId="formGridCity">
               <Form.Label>City</Form.Label>
@@ -92,8 +122,7 @@ export default function Booking() {
                 value={address.state}
                 onChange={handleAddressChange}
                 required
-              >
-              </Form.Control>
+              ></Form.Control>
             </Form.Group>
 
             <Form.Group as={Col} controlId="formGridZip">
@@ -120,7 +149,7 @@ export default function Booking() {
                     type="text"
                     placeholder="Enter patient's name"
                     value={patient.name}
-                    onChange={(event) => handlePatientChange(index, event)}
+                    onChange={event => handlePatientChange(index, event)}
                     required
                   />
                 </Form.Group>
@@ -132,7 +161,7 @@ export default function Booking() {
                     type="number"
                     placeholder="Enter patient's age"
                     value={patient.age}
-                    onChange={(event) => handlePatientChange(index, event)}
+                    onChange={event => handlePatientChange(index, event)}
                     required
                   />
                 </Form.Group>
@@ -144,9 +173,9 @@ export default function Booking() {
                   as="textarea"
                   name="diagnosis"
                   placeholder="The problems faced by the patient"
-                  style={{ height: "8rem" }}
+                  style={{height: '8rem'}}
                   value={patient.diagnosis}
-                  onChange={(event) => handlePatientChange(index, event)}
+                  onChange={event => handlePatientChange(index, event)}
                 />
               </Form.Group>
             </div>
