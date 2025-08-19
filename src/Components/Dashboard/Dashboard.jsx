@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef,useState, useEffect } from "react";
 import "./Dashboard.css"
 import Header from "../Essentials/Header";
 import Card from "./Card/Card";
@@ -13,9 +13,12 @@ import search from '../../assets/img/search.png';
 import planning from '../../assets/img/planning.png';
 import companion from '../../assets/img/companion.png';
 import followUp from '../../assets/img/followUp.png';
+import Chatbot from  '../Chatbot/Chatbot'
+import Reviews from "../Care/CompanionProfile/Reviews";
 
 export default function Dashboard() {
   const videoRef = useRef(null);
+  const [showChatbot, setShowChatbot] = useState(false);
   
   useEffect(() => {
     if (videoRef && videoRef.current) {
@@ -75,7 +78,7 @@ export default function Dashboard() {
           <img src={whyUsImg} alt="Why Us" />
         </div>
       </div>
-
+            <Reviews/>
       <div className="process p-4">
         <h2 className="mt-3 mb-4" style={{color: '#7C9D96'}}>
           <span style={{color: '#E9B384'}}>Elderly</span> Care Process
@@ -101,6 +104,18 @@ export default function Dashboard() {
             </div>
           ))}
         </div>
+         <button 
+        onClick={() => setShowChatbot(!showChatbot)}
+        style={{
+          position: "fixed", bottom: "20px", right: "20px",
+          borderRadius: "50%", padding: "15px",
+          background: "#4CAF50", color: "white", border: "none"
+        }}
+      >
+        💬
+      </button>
+
+      <Chatbot trigger={showChatbot} setTrigger={setShowChatbot} />
       </div>
       <Footer />
     </div>

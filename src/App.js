@@ -11,6 +11,7 @@ import LoginSignup from './Components/LoginSignup/LoginSignup';
 import Booking from './Components/Booking/Booking';
 import PatientDetails from './Components/PatientDetails/PatientDetails';
 import Confirmation from './Components/Confirmation/Confirmation';
+import Reviews from './Components/Care/CompanionProfile/Reviews';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,7 @@ const router = createBrowserRouter([
     path: "/dashboard",
     element: <Dashboard />
   },
+  
   {
     path: "/care/:type",
     element: <Care />

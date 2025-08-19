@@ -1,0 +1,100 @@
+.chatbotApp {
+  width: 50%;
+}
+
+.chatPopup {
+  z-index: 10;
+  height: 100vh;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  top: 0;
+  background-color: rgba(0, 0, 0, 0.221);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.popupBox {
+  background-color: white;
+  border-radius: 10px;
+  width: 50%;
+  height: 80%;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.chatbotName {
+  background-color: rgb(141, 111, 107);
+  color: beige;
+  border-radius: 10px 10px 0 0;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.chatbotName button {
+  border: 0;
+  background: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.bottomdiv {
+  border-radius: 0 0 10px 10px;
+}
+
+/* Make bot vs user messages distinct */
+.cs-message-list__scroll-wrapper {
+  align-items: flex-start !important; /* left align by default */
+}
+
+/* Bot message style */
+.cs-message--incoming .cs-message__content {
+  background-color: #e8f4ff;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+}
+
+/* User message style */
+.cs-message--outgoing .cs-message__content {
+  background-color: #dcf8c6;
+  border-radius: 10px;
+  padding: 10px;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  margin-left: auto; /* push to right */
+}
+
+/* Markdown inside bot messages */
+.cs-message__content h1,
+.cs-message__content h2,
+.cs-message__content h3 {
+  margin: 5px 0;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.cs-message__content ul {
+  margin: 5px 0 5px 20px;
+  padding: 0;
+}
+
+.cs-message__content p {
+  margin: 5px 0;
+}
+
+.cs-message-input__content-editor-wrapper {
+  background-color: rgb(249, 228, 192) !important;
+}
+
+.cs-message-input__content-editor-wrapper > div > div {
+  background-color: rgb(249, 228, 192) !important;
+}
